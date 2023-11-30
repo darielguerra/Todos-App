@@ -15,8 +15,13 @@ app.listen(8080);
 //mongoose.process.env.data
 
 
+app.get('/todos', (req, res) => {
+  res.send("Hello")
+})
+
 
 //get
+/*
 app.get('/todos', async (req, res) =>
   {
     const body = req.body;
@@ -38,3 +43,4 @@ await {
     app.save(todo);
 }
 )
+*/
