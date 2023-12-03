@@ -1,19 +1,15 @@
-const express = require('express');
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import morgan from 'morgan';
+
+dotenv.config();
+
 const app = express();
-//const mongoose = app.mongoose;
-
-
-
-//const todoModel = require('./schema')
-
-//app.use('cors');
-//const json = app.use('express.json');
-
 app.listen(8080);
 
-
-//mongoose.process.env.data
-
+app.use(cors());
+app.use(morgan('tiny'))//prints out a short log whenever a requet is made
 
 app.get('/todos', (req, res) => {
   res.send("Hello")
