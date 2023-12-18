@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const TodoSchema = new mongoose.Schema(
     {    
         description: {
-            type: String,
-            required: true,
+            type: String
+            //required: true,
         },
         completed: {
             type: Boolean

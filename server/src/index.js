@@ -10,18 +10,65 @@ dotenv.config();
 
 const app = express();
 
-//app.use(express.json);
+app.use(express.json());
 app.use(cors());
 app.use(morgan('tiny'))//prints out a short log whenever a requet is made
-
-
-
-
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(8080);
   console.log('server running on port 8080');
 })
+
+
+app.get('/todos', async (req, res) => {
+  try{
+    const allTodos = await TodoModel.find({});
+    res.json(allTodos);
+  }
+  catch (err){
+    res.json(err);
+  }
+})
+
+
+/* other get todos versions:
+app.get('/todos', async (req, res) => {
+  TodoModel.find0({}, (err, result) => {
+    if(err) {
+      res.json(err);
+    }
+    else {
+      res.json(result);
+    }
+  });
+  res.json(allTodos);
+})
+
+app.get('/todos', async (req, res) => {
+  const allTodos = await TodoModel.find();
+  res.json(allTodos);
+})
+*/
+
+app.post('/createtodo', async (req, res) => {
+  const body = req.body;
+  const newTodo = new TodoModel(body);
+  await newTodo.save(); 
+
+  res.json(body);
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 app.get('/todos', (req, res) => {
@@ -29,14 +76,15 @@ app.get('/todos', (req, res) => {
    if 
    console.log(`${req.method} and ${request.url}`);
    res.json({msg: 'Hello world!!!'});
+
+
+   app.post('/auth', (req,res) => {
+      const { name, email, password } = req.body;
+   }))
 })
 */
 
 
-app.get('/todos', async (req, res) => {
-  const allTodos = await TodoModel.find();
-  res.json(allTodos);
-})
 
 /*
 app.get('/todos', async (req, res) => {
