@@ -7,12 +7,24 @@ function App() {
   const api = `http://localhost:8080`;
 
   const [todos, setTodos] = useState([]);
+  const [description, setDescription] = useState("");
+  const [completed, setCompleted] = useState(false);
 
-useEffect(() => {
-  Axios.get(`${api}/todos`).then(response => {
-    setTodos(response.data);
-  })
-}, [])
+  useEffect(() => {
+    Axios.get(`${api}/todos`).then(response => {
+      setTodos(response.data);
+    })
+  }, [])
+
+  const createTodo = () => {
+    Axios.post(`${api}/createtodo`,{
+     description: description,
+     completed: completed
+    }).then(response => {
+      //alert("Todo Created");
+      setTodos([...todos, {description:description, completed:completed}]);
+    })
+  }
 
 
   return (
@@ -25,8 +37,8 @@ useEffect(() => {
        </div>
 
        <div>
-        <input type="text" placeholder="Description" />
-        <button>Add Todo</button>
+        <input type="text" placeholder="Description" onChange={event => setDescription(event.target.value)}/>
+        <button onClick={createTodo}>Add Todo</button>
        </div>
        <div>
         

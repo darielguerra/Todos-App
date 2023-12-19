@@ -31,6 +31,15 @@ app.get('/todos', async (req, res) => {
 })
 
 
+app.post('/createtodo', async (req, res) => {
+  const body = req.body;
+  const newTodo = new TodoModel(body);
+  await newTodo.save(); 
+
+  res.json(body);
+})
+
+
 /* other get todos versions:
 app.get('/todos', async (req, res) => {
   TodoModel.find0({}, (err, result) => {
@@ -49,16 +58,6 @@ app.get('/todos', async (req, res) => {
   res.json(allTodos);
 })
 */
-
-app.post('/createtodo', async (req, res) => {
-  const body = req.body;
-  const newTodo = new TodoModel(body);
-  await newTodo.save(); 
-
-  res.json(body);
-})
-
-
 
 
 
