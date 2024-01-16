@@ -1,0 +1,11 @@
+.structure {
+}
+
+.todos {
+    display: flex;
+    flex-wrap: wrap; /*responsive, text come inward when close window*/
+}
+
+.todo {
+    padding: 20px;
+}

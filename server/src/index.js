@@ -19,18 +19,30 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   console.log('server running on port 8080');
 })
 
-
-app.get('/todos', async (req, res) => {
-  try{
+app.get('/todos', async (req,res) => {
     const allTodos = await TodoModel.find({});
     res.json(allTodos);
-  }
-  catch (err){
-    res.json(err);
-  }
+})
+
+app.post('/createtodo', (req, res) => {
+  const newTodo = new TodoModel(req.body);
+  newTodo.save(); 
+  res.json(newTodo);
+})
+
+app.delete('deletetodo/:todoid', async (req, res) => {
+  await TodoModel.findByIdAndDelete(req.param.todoid);
+})
+
+app.put('todocompleted/:todoid', async (req, res) => {
+   const todo = TodoModel.findById(req.param.todoid);
+   todo.completed = !todo.completed;
+   res.json(todo);
 })
 
 
+
+/* other versions of crud requests:
 app.post('/createtodo', async (req, res) => {
   const body = req.body;
   const newTodo = new TodoModel(body);
@@ -40,7 +52,7 @@ app.post('/createtodo', async (req, res) => {
 })
 
 
-/* other get todos versions:
+
 app.get('/todos', async (req, res) => {
   TodoModel.find0({}, (err, result) => {
     if(err) {
@@ -57,6 +69,20 @@ app.get('/todos', async (req, res) => {
   const allTodos = await TodoModel.find();
   res.json(allTodos);
 })
+
+
+app.get('/todos', async (req, res) => {
+  try{
+    const allTodos = await TodoModel.find({});
+    res.json(allTodos);
+  }
+  catch (err){
+    res.json(err);
+  }
+})
+
+
+
 */
 
 

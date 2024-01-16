@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import "./App.css";
 
 function App() {
 
@@ -26,13 +27,22 @@ function App() {
     })
   }
 
+  const deleteTodo = () => {
+    fetch(api + "/deletetodo/todoid")
+     // .then(res => )
+  }
+
 
   return (
-    <div className="App">
-       <div>
-          {todos.map(todo => { 
-            return (
-                <h3>{todo.completed}<input type="checkbox" />{todo.description}</h3>
+    <div className="structure">
+       <div className="todos">
+          {todos.map(todo => { (
+           // return (
+              <div key={todo._id}>
+                <h3 className="todo">{todo.descriptio}</h3>
+                <input type="checkbox">{todo.coompleted}</input>
+                
+              </div>
         )})}
        </div>
 
