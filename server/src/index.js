@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   console.log('server running on port 8080');
 })
 
-app.get('/todos', async (req,res) => {
+app.get('/todos', async (req, res) => {
     const allTodos = await TodoModel.find({});
     res.json(allTodos);
 })
@@ -30,12 +30,13 @@ app.post('/createtodo', (req, res) => {
   res.json(newTodo);
 })
 
-app.delete('deletetodo/:todoid', async (req, res) => {
-  await TodoModel.findByIdAndDelete(req.param.todoid);
+app.delete('/deletetodo/:id', async (req, res) => {
+  const result = await TodoModel.findByIdAndDelete(req.param.id);
+  res.json({result});
 })
 
-app.put('todocompleted/:todoid', async (req, res) => {
-   const todo = TodoModel.findById(req.param.todoid);
+app.put('/todocompleted/:id', async (req, res) => {
+   const todo = TodoModel.findById(req.param.id);
    todo.completed = !todo.completed;
    res.json(todo);
 })
