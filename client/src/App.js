@@ -30,12 +30,13 @@ function App() {
     })
   }
 
-  const deleteTodo = todo => {
-    Axios.delete(`${api}/deletetodo/${todo._id}`)
-    .then(res => {
-      setTodos(todos => todos.filter(todo => todo._id !== res._id))}
-      )}
-      
+  const deleteTodo = async id => {
+    const data = await Axios.delete(`${api}/deletetodo/${id}`,{
+           description: description,
+           completed: completed    
+    })
+  }    
+        
 /*
   const toggleCompleted = id => {
     Axios.put(`${api}/todocompleted/${id}`).then(res => {
@@ -57,7 +58,7 @@ function App() {
                      onChange={toggleCompleted(todo._id)} 
                    */
                 />
-                <button onClick={() => deleteTodo(todo)}>Delete</button>
+                <button onClick={() => deleteTodo(todo._id)}>Delete</button>
               </div>
           )})}
        </div>

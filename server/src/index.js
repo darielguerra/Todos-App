@@ -31,7 +31,10 @@ app.post('/createtodo', (req, res) => {
 })
 
 app.delete('/deletetodo/:id', async (req, res) => {
-  const result = await TodoModel.findByIdAndDelete(req.param.id);
+  const result = await TodoModel.findByIdAndDelete(req.params.id);
+  //console.log(req.param.id);
+  //console.log(req)
+  console.log(req.params)
   res.json({result});
 })
 
