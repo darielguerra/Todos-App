@@ -15,26 +15,42 @@ function App() {
   const [description, setDescription] = useState("");
   const [completed, setCompleted] = useState(false);
 
-  useEffect(() => {
-    Axios.get(`${api}/todos`).then(res => {
-      setTodos(res.data);
-    })
+  
+  useEffect( () => {
+     GetTodos();
+     //when I had axios.get inside useEffect,
+     //it crashed when there was no data in database
+     //calling a seperate function fixed this
   }, [])
 
-  const createTodo = () => {
-    Axios.post(`${api}/createtodo`,{
+   const GetTodos = () => {
+      Axios.get(`${api}/todos`)
+      .then(res => setTodos(res.data))
+      .catch((err) => console.error("Error: ", err));
+   }
+
+
+  const createTodo = async () => {
+    const todo = await Axios.post(`${api}/createtodo`,{
      description: description,
      completed: completed
-    }).then(res => {
-      setTodos([...todos, {description:description, completed:completed}]);
     })
+    
+    setTodos([...todos, todo.data]);
+    //adding todo.data instead of {description:description, completed:completed}
+    //caused crashing issue when deleting things created
+    //after the last page refresh to be fixed
+    
+    setDescription(""); 
+    //this clears out input text after pressing create button
+    //input box must have value={description} property to work
   }
 
+
   const deleteTodo = async id => {
-    const data = await Axios.delete(`${api}/deletetodo/${id}`,{
-           description: description,
-           completed: completed    
-    })
+    await Axios.delete(`${api}/deletetodo/${id}`);
+
+    setTodos(todos => todos.filter(todo => todo._id !== id));
   }    
         
 /*
@@ -63,7 +79,7 @@ function App() {
           )})}
        </div>
        <div>
-        <input type="text" placeholder="Description" onChange={event => setDescription(event.target.value)}/>
+        <input type="text" placeholder="Description" onChange={event => setDescription(event.target.value)} value={description}/>
         <button onClick={createTodo}>Add Todo</button>
        </div>
     </div>
