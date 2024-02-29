@@ -31,7 +31,7 @@ function App() {
 
 
   const createTodo = async () => {
-    const todo = await Axios.post(`${api}/createtodo`,{
+     const todo = await Axios.post(`${api}/createtodo`,{
      description: description,
      completed: completed
     })
@@ -46,20 +46,30 @@ function App() {
     //input box must have value={description} property to work
   }
 
-
   const deleteTodo = async id => {
     await Axios.delete(`${api}/deletetodo/${id}`);
 
     setTodos(todos => todos.filter(todo => todo._id !== id));
   }    
-        
-/*
-  const toggleCompleted = id => {
-    Axios.put(`${api}/todocompleted/${id}`).then(res => {
+  
+
+  const toggleCompleted = async id => {
+    await Axios.put(`${api}/todocompleted/${id}`).then(res => {
       setCompleted(!completed);
+
+      todos.map(todo => {
+        if (todo._id === id){
+          setTodos({...todos, description: description, completed: !completed})
+        }
+      })
+
+      //setTodos(todos => todos.map(todo => {
+       //todo._id !== id}
+       // ));
+     // console.log()
     })
   }
-*/
+
 
   return (
     <div className="container">
@@ -69,12 +79,17 @@ function App() {
               <div key={todo._id}>
                 <h3 className="todo">{todo.description}</h3>
                 <input type="checkbox" 
-                    /* 
-                     value={todo.completed}
-                     onChange={toggleCompleted(todo._id)} 
-                   */
+ 
+                     //value={todo.completed}
+                     checked={todo.completed}
+                     onChange={() => toggleCompleted(todo._id)} 
+                     //first had {toggleCompleted(todo._id)} 
+                     //this caused put to be called over and over
+   
                 />
                 <button onClick={() => deleteTodo(todo._id)}>Delete</button>
+                   {/*first had {deleteTodo(todo._id)} instead
+                   this caused all data to get deleted, deleteTodo gets called over and over*/}
               </div>
           )})}
        </div>

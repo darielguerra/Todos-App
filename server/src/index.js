@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(morgan('tiny'))//prints out a short log whenever a requet is made
+app.use(morgan('tiny'))//prints out a short log whenever a request is made
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(8080);
@@ -32,14 +32,11 @@ app.post('/createtodo', (req, res) => {
 
 app.delete('/deletetodo/:id', async (req, res) => {
   const result = await TodoModel.findByIdAndDelete(req.params.id);
-  //console.log(req.param.id);
-  //console.log(req)
-  console.log(req.params)
-  res.json({result});
+  res.json(result);
 })
 
 app.put('/todocompleted/:id', async (req, res) => {
-   const todo = TodoModel.findById(req.param.id);
+   const todo = await TodoModel.findById(req.params.id);
    todo.completed = !todo.completed;
    res.json(todo);
 })
