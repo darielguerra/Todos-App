@@ -53,21 +53,25 @@ function App() {
   }    
   
 
-  const toggleCompleted = async id => {
-    await Axios.put(`${api}/todocompleted/${id}`).then(res => {
-      setCompleted(!completed);
+  const toggleCompleted = async (e, todo) => {
+    setCompleted(e.target.checked);
 
-      todos.map(todo => {
-        if (todo._id === id){
-          setTodos({...todos, description: description, completed: !completed})
-        }
-      })
+    console.log(completed)
 
-      //setTodos(todos => todos.map(todo => {
-       //todo._id !== id}
-       // ));
-     // console.log()
-    })
+    setTodos(todos => todos.map(thisTodo => {
+      if(thisTodo._id === todo._id) {
+        thisTodo.completed = completed;
+      }
+      return thisTodo;
+    } ))
+
+    //todo.completed = completed;    
+    //todo.completed = !todo.completed;   
+    //todo.completed = !completed;  
+
+    const data = await Axios.put(`${api}/todocompleted/${todo._id}`)
+
+    console.log(data);
   }
 
 
@@ -82,7 +86,10 @@ function App() {
  
                      //value={todo.completed}
                      checked={todo.completed}
-                     onChange={() => toggleCompleted(todo._id)} 
+                     onClick={(e) => toggleCompleted(e, todo)} 
+                     //onChange={() => toggleCompleted(todo._id)} 
+                     //onChange={e => toggleCompleted("completed", e.target.checked)} 
+                     //onChange={toggleCompleted} 
                      //first had {toggleCompleted(todo._id)} 
                      //this caused put to be called over and over
    
