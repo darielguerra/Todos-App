@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import "./App.css";
+import "./styles/App.css";
 
 /* Todo Object:   
                  description: string
