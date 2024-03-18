@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import "./App.css";
+import './App.css';
 
 /* Todo Object:   
                  description: string
@@ -53,26 +53,43 @@ function App() {
   }    
   
 
-  const toggleCompleted = async (e, todo) => {
-    setCompleted(e.target.checked);
+  const toggleCompleted = async (val, todo) => {
+    console.log("value: " + val);
+    const updatedTodo = { ...todo, completed: val };
+    await Axios.put(`${api}/todocompleted/${todo._id}`, updatedTodo);
+    setTodos(todos => todos.map(thisTodo => {
+      if (thisTodo._id === todo._id) {
+        return updatedTodo;
+      }
+     return thisTodo;
+    }));
+  }
+  
 
-    console.log(completed)
+  /*The below code is an example of state not updating 
+   *directly after it is assigned e.target.checked
+  
+  const toggleCompleted = async (e, todo) => {
+    
+    console.log("e " + e.target.checked);   //true
+    console.log("c " + completed);          //false
+    setCompleted(e.target.checked);         //state assighmnet
+    console.log("c " + completed);          //false
+  
+    await Axios.put(`${api}/todocompleted/${todo._id}`,{      
+      completed: completed
+     }) 
 
     setTodos(todos => todos.map(thisTodo => {
       if(thisTodo._id === todo._id) {
         thisTodo.completed = completed;
       }
       return thisTodo;
-    } ))
-
-    //todo.completed = completed;    
-    //todo.completed = !todo.completed;   
-    //todo.completed = !completed;  
-
-    const data = await Axios.put(`${api}/todocompleted/${todo._id}`)
-
-    console.log(data);
+    }))
+    console.log("c " + completed);           //false
   }
+
+  */
 
 
   return (
@@ -84,15 +101,19 @@ function App() {
                 <h3 className="todo">{todo.description}</h3>
                 <input type="checkbox" 
  
-                     //value={todo.completed}
-                     checked={todo.completed}
-                     onClick={(e) => toggleCompleted(e, todo)} 
-                     //onChange={() => toggleCompleted(todo._id)} 
+                    
+                     //checked={todo.completed} //this made the check stay checked twice
+                                              //but it seems to persist the checked state
+                                              //after refresh
+                     //onClick={(e) => toggleCompleted(e, todo)} 
+                     //onChange={(e) => toggleCompleted(e, todo)}
+                     
+                     onClick={(e) => toggleCompleted(e.target.checked, todo)}
+                     
                      //onChange={e => toggleCompleted("completed", e.target.checked)} 
-                     //onChange={toggleCompleted} 
-                     //first had {toggleCompleted(todo._id)} 
+                     //first had {toggleCompleted(todo)} 
                      //this caused put to be called over and over
-   
+                     value={todo.completed}
                 />
                 <button onClick={() => deleteTodo(todo._id)}>Delete</button>
                    {/*first had {deleteTodo(todo._id)} instead

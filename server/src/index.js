@@ -35,14 +35,11 @@ app.delete('/deletetodo/:id', async (req, res) => {
   res.json(result);
 })
 
-
 app.put('/todocompleted/:id', async (req, res) => {
-   const todo = await TodoModel.findById(req.params.id);
-   console.log(todo);
-   //todo.completed = !todo.completed;
-   //todo.completed = false;
-   console.log(todo)
+   console.log(req.body);
+   const id = req.params.id;
+   const todo = await TodoModel.findByIdAndUpdate({_id: id}, req.body, { new: true });
+   console.log(todo.completed);
    res.json(todo);
 })
-
 
