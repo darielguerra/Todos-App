@@ -4,15 +4,10 @@
 .todos {
     display: flex;
     flex-wrap: wrap; /*responsive, text come inward when close window*/
-    border: 10px;
-    border-style: dashed;
-    border-color: red;
 }
 
 .todo {
     padding: 20px;
-    border-style: solid;
-    border-color: aqua;
 }
 
 
