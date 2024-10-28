@@ -15,6 +15,9 @@ function App() {
   const [description, setDescription] = useState("");
   const [completed, setCompleted] = useState(false);
 
+  const [notes, setNotes] = useState([]);
+  const [noteTitle, setNoteTitle] = useState("");
+  const [noteDescription, setNoteDescription] = useState("");
   
   useEffect( () => {
      GetTodos();
@@ -65,6 +68,11 @@ function App() {
     }));
   }
   
+
+  const createNote = async () => {
+    await axios.post(`{api}/notes`).
+    
+  }
 
   /*The below code is an example of state not updating 
    *directly after it is assigned e.target.checked
@@ -124,6 +132,21 @@ function App() {
        <div>
         <input type="text" placeholder="Description" onChange={event => setDescription(event.target.value)} value={description}/>
         <button onClick={createTodo}>Add Todo</button>
+       </div>
+       <div className="notes-section">
+        <div className="create-note">
+          <input type="text" className="note-name-input" onChange={event => setNoteTitle(event.target.value)} value={noteTitle} />
+          <input type="text" className="note-description-input" onChange={event => setNoteDescription(event.target.value)} value={noteDescription} />
+          <button onClick={createNote}>Add</button>
+        </div>
+        <div className="note-box">
+          <div className="note-name">
+            <p>{noteTitle}</p>
+          </div>
+          <div className="note-description">
+            <p>{noteDescription}</p>
+          </div>
+        </div>
        </div>
     </div>
   );

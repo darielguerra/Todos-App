@@ -43,3 +43,10 @@ app.put('/todocompleted/:id', async (req, res) => {
    res.json(todo);
 })
 
+//note request 
+
+app.get
+
+app.post('/notes', async (req, res) => {
+  newNote = NoteModel(req.body)
+}
