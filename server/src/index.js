@@ -48,5 +48,6 @@ app.put('/todocompleted/:id', async (req, res) => {
 app.get
 
 app.post('/notes', async (req, res) => {
-  newNote = NoteModel(req.body)
+  newNote = new NoteModel(req.body);
+  
 }
