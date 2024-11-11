@@ -70,8 +70,15 @@ function App() {
   
 
   const createNote = async () => {
-    await axios.post(`{api}/notes`).
+    const note = await Axios.post(`${api}/notes`,
+      { 
+        title: noteTitle,
+        description: noteDescription
+      }
+    ) 
+    setNotes([...notes, note.data]);
     
+    setNoteDescription("");
   }
 
   /*The below code is an example of state not updating 
@@ -139,13 +146,23 @@ function App() {
           <input type="text" className="note-description-input" onChange={event => setNoteDescription(event.target.value)} value={noteDescription} />
           <button onClick={createNote}>Add</button>
         </div>
-        <div className="note-box">
-          <div className="note-name">
-            <p>{noteTitle}</p>
-          </div>
-          <div className="note-description">
-            <p>{noteDescription}</p>
-          </div>
+
+        <div className="notes">
+          {notes.map(note=> {
+            return(
+              <div className="note-box" key={note._id}>
+                <div className="note-name">
+                  <p>{noteTitle}</p>
+                </div>
+                <div className="note-description">
+                  <p>{noteDescription}</p>
+                </div>
+                <div className="delete-note">
+                  <button className="note-delete-buton"></button>
+                </div>
+              </div>
+
+          )})}
         </div>
        </div>
     </div>

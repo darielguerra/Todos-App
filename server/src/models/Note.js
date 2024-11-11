@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const NoteSchema = new mongoose.Schema (
   {
-    title: string,
-    description: string
+    title: String,
+    description: String
   }
 )
 

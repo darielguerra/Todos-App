@@ -5,6 +5,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import TodoModel from './models/Todo.js';
+import NoteModel from './models/Note.js';
 
 dotenv.config();
 
@@ -43,11 +44,15 @@ app.put('/todocompleted/:id', async (req, res) => {
    res.json(todo);
 })
 
-//note request 
+//note requests 
 
-app.get
+app.get('/notes', async (req, res) => {
+   const notes = await NoteModel.find({});
+   res.json(notes);
+})
 
 app.post('/notes', async (req, res) => {
-  newNote = new NoteModel(req.body);
-  
-}
+  const newNote = new NoteModel(req.body);
+  newNote.save(); 
+  res.json(newNote);
+})
